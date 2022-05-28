@@ -837,7 +837,8 @@ endfunction
 "Create new file by hugo for add front matter
 function! vimwiki#base#create_by_hugo(file_name) abort
   if empty(glob(a:file_name))
-    execute "silent ! hugo new '".a:file_name."'"
+    echo "! hugo new '".a:file_name."'"
+    execute "silent ! hugo -s ".g:blog_source_dir." new '".a:file_name."'"
   endif
 endfunction
 
