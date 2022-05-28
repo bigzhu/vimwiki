@@ -835,14 +835,11 @@ function! vimwiki#base#check_links() abort
 endfunction
 
 "Create new file by hugo for add front matter
-if exists("*create_by_hugo")
-else
-    function! create_by_hugo(FileName)
-      if empty(glob(a:FileName))
-        execute "silent ! hugo new '".a:FileName."'"
-      endif
-    endfunction
-endif
+function! vimwiki#base#create_by_hugo(FileName)
+  if empty(glob(a:FileName))
+    execute "silent ! hugo new '".a:FileName."'"
+  endif
+endfunction
 
 function! vimwiki#base#edit_file(command, filename, anchor, ...) abort
   let fname = escape(a:filename, '% *|#`')
@@ -862,7 +859,7 @@ function! vimwiki#base#edit_file(command, filename, anchor, ...) abort
   " getpos() directly after this command. Strange.
   if !(a:command ==# ':e ' && vimwiki#path#is_equal(a:filename, expand('%:p')))
     try
-      call create_by_hugo(fname)
+      call vimwiki#base#create_by_hugo(fname)
       execute a:command fname
     catch /E37:/
       echomsg 'Vimwiki: Can''t leave the current buffer, because it is modified. Hint: Take a look at'
